@@ -1,0 +1,9 @@
+/*
+!.gitignore
+!makefile
+!wave_dump.ucli
+!*.f
+!*.sv
+!/tinyalu_dut
+!**/*.sv
+!**/*.vhd

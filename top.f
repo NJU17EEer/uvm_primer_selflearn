@@ -1,0 +1,2 @@
+-F dut.f
+-F tb.f

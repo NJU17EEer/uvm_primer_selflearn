@@ -1,0 +1,4 @@
+fsdbDumpfile "wave.fsdb"
+fsdbDumpvars 0 top
+
+run
