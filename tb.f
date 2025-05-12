@@ -1,1 +1,1 @@
-$PRJ_HOME/tinyalu_tb.sv
+tinyalu_tb.sv
