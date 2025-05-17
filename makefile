@@ -22,7 +22,7 @@ SIM_FLAG := +ntb_random_seed=12345678 \
 			-ucli -do $(PRJ_HOME)/wave_dump.ucli
 SIM_FLAG += $(CM_FLAG) -cm_dir $(SIM_VDB)
 
-.PHONY: all analyse elab sim wave cov
+.PHONY: all analyse elab sim wave cov clean
 
 all: analyse elab sim
 
@@ -49,5 +49,5 @@ cov: $(WORK_PATH)
 $(WORK_PATH):
 	@mkdir -p $(WORK_PATH)
 
-clr:
+clean:
 	@rm -rf $(WORK_PATH)
