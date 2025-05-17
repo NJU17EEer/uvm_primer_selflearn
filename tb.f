@@ -3,4 +3,6 @@ tinyalu_bfm.sv
 tester.sv
 coverage.sv
 scoreboard.sv
+
++incdir+.
 top.sv
