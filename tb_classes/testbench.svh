@@ -13,20 +13,28 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-package tinyalu_pkg;
+class testbench;
 
-    typedef enum bit[2:0] {no_op  = 3'b000,
-        add_op = 3'b001,
-        and_op = 3'b010,
-        xor_op = 3'b011,
-        mul_op = 3'b100,
-        rst_op = 3'b111} operation_t;
+   virtual tinyalu_bfm bfm;
 
+   tester    tester_h;
+   coverage  coverage_h;
+   scoreboard scoreboard_h;
 
-    `include "coverage.svh"
-    `include "tester.svh"
-    `include "scoreboard.svh"
-    `include "testbench.svh"
+   function new (virtual tinyalu_bfm b);
+      bfm = b;
+   endfunction : new
 
-endpackage : tinyalu_pkg
+   task execute();
+      tester_h     = new(bfm);
+      coverage_h   = new(bfm);
+      scoreboard_h = new(bfm);
 
+      fork
+         tester_h.execute();
+         coverage_h.execute();
+         scoreboard_h.execute();
+      join_none
+   endtask : execute
+
+endclass : testbench

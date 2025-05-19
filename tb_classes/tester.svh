@@ -13,10 +13,15 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-module tester(tinyalu_bfm bfm);
-   import tinyalu_pkg::*;
+class tester;
 
-   function operation_t get_op();
+   virtual tinyalu_bfm bfm;
+
+   function new (virtual tinyalu_bfm b);
+      bfm = b;
+   endfunction : new
+
+   protected function operation_t get_op();
       bit [2:0] op_choice;
       op_choice = $random;
       case (op_choice)
@@ -31,7 +36,7 @@ module tester(tinyalu_bfm bfm);
       endcase // case (op_choice)
    endfunction : get_op
 
-   function byte get_data();
+   protected function byte get_data();
       bit [1:0] zero_ones;
       zero_ones = $random;
       if (zero_ones == 2'b00)
@@ -42,19 +47,29 @@ module tester(tinyalu_bfm bfm);
          return $random;
    endfunction : get_data
 
-   initial begin
+   task execute();
       byte         unsigned        iA;
       byte         unsigned        iB;
+      shortint     unsigned        result;
       operation_t                  op_set;
-      shortint     result;
-
       bfm.reset_alu();
-      repeat (1000) begin : random_loop
+      op_set = rst_op;
+      iA = get_data();
+      iB = get_data();
+      bfm.send_op(iA, iB, op_set, result);
+      op_set = mul_op;
+      bfm.send_op(iA, iB, op_set, result);
+      bfm.send_op(iA, iB, op_set, result);
+      op_set = rst_op;
+      bfm.send_op(iA, iB, op_set, result);
+      repeat (10) begin : random_loop
          op_set = get_op();
          iA = get_data();
          iB = get_data();
-         bfm.send_op(iA, iB, op_set, result);
+         bfm.send_op(iA, iB, op_set, result );
+         $display("%2h %6s %2h = %4h",iA, op_set.name(), iB, result);
       end : random_loop
       $finish(2);
-   end // initial begin
-endmodule : tester
+   endtask : execute
+
+endclass : tester

@@ -13,8 +13,9 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-module coverage(tinyalu_bfm bfm);
-   import tinyalu_pkg::*;
+class coverage;
+
+   virtual tinyalu_bfm bfm;
 
    byte         unsigned        A;
    byte         unsigned        B;
@@ -34,6 +35,7 @@ module coverage(tinyalu_bfm bfm);
 
          bins twoops[] = ([add_op:mul_op] [* 2]);
          bins manymult = (mul_op [* 3:5]);
+
 
       }
 
@@ -91,20 +93,21 @@ module coverage(tinyalu_bfm bfm);
 
    endgroup
 
-   op_cov oc;
-   zeros_or_ones_on_ops c_00_FF;
+   function new (virtual tinyalu_bfm b);
+      op_cov = new();
+      zeros_or_ones_on_ops = new();
+      bfm = b;
+   endfunction : new
 
-   initial begin : coverage_block
-      oc = new();
-      c_00_FF = new();
+   task execute();
       forever begin  : sampling_block
          @(negedge bfm.clk);
          A = bfm.A;
          B = bfm.B;
          op_set = bfm.op_set;
-         oc.sample();
-         c_00_FF.sample();
+         op_cov.sample();
+         zeros_or_ones_on_ops.sample();
       end : sampling_block
-   end : coverage_block
+   endtask : execute
 
-endmodule : coverage
+endclass : coverage

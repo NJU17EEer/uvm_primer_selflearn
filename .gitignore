@@ -5,5 +5,7 @@
 !*.f
 !*.sv
 !/tinyalu_dut
+!/tb_classes
 !**/*.sv
 !**/*.vhd
+!**/*.svh

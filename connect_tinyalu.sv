@@ -1,6 +1,8 @@
 `ifndef _CONNECT_TINYALU_SV_
 `define _CONNECT_TINYALU_SV_
 
+tinyalu_bfm     bfm();
+
 initial begin
   force top.DUT.A       = bfm.A;
   force top.DUT.B       = bfm.B;

@@ -8,6 +8,8 @@ VCS_VDB = design.vdb
 SIM_VDB = sim.vdb
 
 CM_FLAG += -cm line+cond+fsm+tgl+branch+assert
+# line coverage in class
+CM_FLAG += -cm_line svtb
 
 VERDI_FLAG ?= -managercFile ~/Workspace/common/verdi/manage.rc
 

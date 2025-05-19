@@ -14,12 +14,19 @@
  limitations under the License.
  */
 module top;
-   tinyalu_bfm    bfm();
-   tester     tester_i    (bfm);
-   coverage   coverage_i  (bfm);
-   scoreboard scoreboard_i(bfm);
+  import   tinyalu_pkg::*;
+  `include "tinyalu_macros.svh"
 
-   tinyalu DUT ();
+  tinyalu DUT ();
 
-   `include "connect_tinyalu.sv"
+  `include "connect_tinyalu.sv"
+
+  testbench    testbench_h;
+  initial begin
+    testbench_h = new(bfm);
+    testbench_h.execute();
+  end
+
 endmodule : top
+
+
