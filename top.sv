@@ -25,7 +25,6 @@ module top;
   `include "connect_tinyalu.sv"
 
   initial begin
-    uvm_config_db #(virtual interface tinyalu_bfm)::set(null, "*", "bfm", bfm);
     run_test();
   end
 

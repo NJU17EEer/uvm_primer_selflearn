@@ -4,6 +4,10 @@
 tinyalu_bfm     bfm();
 
 initial begin
+  uvm_config_db #(virtual interface tinyalu_bfm)::set(null, "*", "bfm", bfm);
+end
+
+initial begin
   force top.DUT.A       = bfm.A;
   force top.DUT.B       = bfm.B;
   force top.DUT.op      = bfm.op;
