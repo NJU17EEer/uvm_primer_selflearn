@@ -30,11 +30,11 @@ tc ?= random_test
 $(warning tc=$(tc))
 SIM_FLAG += +UVM_TESTNAME=$(tc)
 
-.PHONY: all all_3step analyse elab com sim wave cov clean
+.PHONY: all all_2step analyse elab com sim wave cov clean
 
-all: analyse comp sim
+all: analyse analyse elab sim
 
-all_3step: analyse analyse elab sim
+all_2step: analyse comp sim
 
 analyse: $(WORK_PATH)
 	@cd $(WORK_PATH) && vlogan -ntb_opts uvm-1.2 -full64 -l uvm.log -sverilog -kdb
