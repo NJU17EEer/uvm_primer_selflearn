@@ -13,22 +13,21 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-module top;
-  import uvm_pkg::*;
-  `include "uvm_macros.svh"
+class add_tester extends random_tester;
 
-  import tinyalu_pkg::*;
-  `include "tinyalu_macros.svh"
+   function new (virtual tinyalu_bfm b);
+      super.new(b);
+   endfunction : new
 
-  tinyalu DUT ();
+   function operation_t get_op();
+      bit [2:0] op_choice;
+      return add_op;
+   endfunction : get_op
 
-  `include "connect_tinyalu.sv"
+endclass : add_tester
 
-  initial begin
-    uvm_config_db #(virtual interface tinyalu_bfm)::set(null, "*", "bfm", bfm);
-    run_test();
-  end
 
-endmodule : top
+
+
 
 

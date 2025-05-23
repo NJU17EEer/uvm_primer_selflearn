@@ -1,21 +1,22 @@
 /*
- Copyright 2013 Ray Salemi
+   Copyright 2013 Ray Salemi
 
- Licensed under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
 
- http://www.apache.org/licenses/LICENSE-2.0
+       http://www.apache.org/licenses/LICENSE-2.0
 
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
- */
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
 class coverage;
 
    virtual tinyalu_bfm bfm;
+
 
    byte         unsigned        A;
    byte         unsigned        B;
@@ -60,44 +61,46 @@ class coverage;
 
       op_00_FF:  cross a_leg, b_leg, all_ops {
          bins add_00 = binsof (all_ops) intersect {add_op} &&
-            (binsof (a_leg.zeros) || binsof (b_leg.zeros));
+                       (binsof (a_leg.zeros) || binsof (b_leg.zeros));
 
          bins add_FF = binsof (all_ops) intersect {add_op} &&
-            (binsof (a_leg.ones) || binsof (b_leg.ones));
+                       (binsof (a_leg.ones) || binsof (b_leg.ones));
 
          bins and_00 = binsof (all_ops) intersect {and_op} &&
-            (binsof (a_leg.zeros) || binsof (b_leg.zeros));
+                       (binsof (a_leg.zeros) || binsof (b_leg.zeros));
 
          bins and_FF = binsof (all_ops) intersect {and_op} &&
-            (binsof (a_leg.ones) || binsof (b_leg.ones));
+                       (binsof (a_leg.ones) || binsof (b_leg.ones));
 
          bins xor_00 = binsof (all_ops) intersect {xor_op} &&
-            (binsof (a_leg.zeros) || binsof (b_leg.zeros));
+                       (binsof (a_leg.zeros) || binsof (b_leg.zeros));
 
          bins xor_FF = binsof (all_ops) intersect {xor_op} &&
-            (binsof (a_leg.ones) || binsof (b_leg.ones));
+                       (binsof (a_leg.ones) || binsof (b_leg.ones));
 
          bins mul_00 = binsof (all_ops) intersect {mul_op} &&
-            (binsof (a_leg.zeros) || binsof (b_leg.zeros));
+                       (binsof (a_leg.zeros) || binsof (b_leg.zeros));
 
          bins mul_FF = binsof (all_ops) intersect {mul_op} &&
-            (binsof (a_leg.ones) || binsof (b_leg.ones));
+                       (binsof (a_leg.ones) || binsof (b_leg.ones));
 
          bins mul_max = binsof (all_ops) intersect {mul_op} &&
-            (binsof (a_leg.ones) && binsof (b_leg.ones));
+                        (binsof (a_leg.ones) && binsof (b_leg.ones));
 
          ignore_bins others_only =
-            binsof(a_leg.others) && binsof(b_leg.others);
+                                  binsof(a_leg.others) && binsof(b_leg.others);
 
       }
 
-   endgroup
+endgroup
 
    function new (virtual tinyalu_bfm b);
-      op_cov = new();
-      zeros_or_ones_on_ops = new();
-      bfm = b;
+     op_cov = new();
+     zeros_or_ones_on_ops = new();
+     bfm = b;
    endfunction : new
+
+
 
    task execute();
       forever begin  : sampling_block
@@ -111,3 +114,9 @@ class coverage;
    endtask : execute
 
 endclass : coverage
+
+
+
+
+
+

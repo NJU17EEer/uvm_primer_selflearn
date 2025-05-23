@@ -14,21 +14,30 @@ CM_FLAG += -cm_line svtb
 VERDI_FLAG ?= -managercFile ~/Workspace/common/verdi/manage.rc
 
 VCS_FLAG := -full64 \
-			-top top \
-			-debug_acc+all -debug_region+cell+encrypt \
-			-timescale=1ns/1ps \
-			-kdb
+            -top top \
+            -debug_acc+all -debug_region+cell+encrypt \
+            -timescale=1ns/1ps \
+            -kdb \
+			-sverilog
+VCS_FLAG += -ntb_opts uvm-1.2
 VCS_FLAG += $(CM_FLAG) -cm_dir $(VCS_VDB)
 
 SIM_FLAG := +ntb_random_seed=12345678 \
 			-ucli -do $(PRJ_HOME)/wave_dump.ucli
 SIM_FLAG += $(CM_FLAG) -cm_dir $(SIM_VDB)
 
-.PHONY: all analyse elab sim wave cov clean
+tc ?= random_test
+$(warning tc=$(tc))
+SIM_FLAG += +UVM_TESTNAME=$(tc)
 
-all: analyse elab sim
+.PHONY: all all_3step analyse elab com sim wave cov clean
+
+all: analyse comp sim
+
+all_3step: analyse analyse elab sim
 
 analyse: $(WORK_PATH)
+	@cd $(WORK_PATH) && vlogan -ntb_opts uvm-1.2 -full64 -l uvm.log -sverilog -kdb
 	@cd $(WORK_PATH) && vlogan -F $(PRJ_HOME)/top.f -full64 -l top.log -sverilog -kdb
 
 mix_analyse: $(WORK_PATH)
@@ -37,6 +46,9 @@ mix_analyse: $(WORK_PATH)
 
 elab: $(WORK_PATH)
 	@cd $(WORK_PATH) && vcs $(VCS_FLAG) -l elab.log
+
+comp: $(WORK_PATH)
+	@cd $(WORK_PATH) && vcs $(VCS_FLAG) -F $(PRJ_HOME)/top.f -l comp.log
 
 sim: $(WORK_PATH)
 	@cd $(WORK_PATH) && ./simv $(SIM_FLAG) -l sim.log
