@@ -13,16 +13,17 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-class add_tester extends random_tester;
-   `uvm_component_utils(add_tester)
+class add_transaction extends command_transaction;
+   `uvm_object_utils(add_transaction)
 
-   function operation_t get_op();
-      bit [2:0] op_choice;
-      return add_op;
-   endfunction : get_op
+   constraint add_only {
+      op == add_op;
+   }
 
-   function new (string name, uvm_component parent);
-      super.new(name, parent);
+   function new(string name="");
+      super.new(name);
    endfunction : new
 
-endclass : add_tester
+endclass : add_transaction
+
+

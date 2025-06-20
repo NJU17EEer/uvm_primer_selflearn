@@ -32,11 +32,13 @@ package tinyalu_pkg;
    } command_s;
 
 
+   `include "command_transaction.svh"
+   `include "add_transaction.svh"
+   `include "result_transaction.svh"
+   `include "tester.svh"
    `include "coverage.svh"
    `include "driver.svh"
    `include "base_tester.svh"
-   `include "random_tester.svh"
-   `include "add_tester.svh"
    `include "scoreboard.svh"
    `include "command_monitor.svh"
    `include "result_monitor.svh"
