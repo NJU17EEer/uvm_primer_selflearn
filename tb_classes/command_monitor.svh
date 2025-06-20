@@ -22,7 +22,7 @@ class command_monitor extends uvm_component;
       virtual tinyalu_bfm bfm;
 
       if(!uvm_config_db #(virtual tinyalu_bfm)::get(null, "*","bfm", bfm))
-         $fatal("Failed to get BFM");
+         `uvm_fatal("COMMAND MONITOR", "Failed to get BFM")
 
       bfm.command_monitor_h = this;
 
@@ -35,10 +35,10 @@ class command_monitor extends uvm_component;
       cmd.A = A;
       cmd.B = B;
       cmd.op = op2enum(op);
-      $display("COMMAND MONITOR: A:0x%2h B:0x%2h op: %s", A, B, cmd.op.name());
+      `uvm_info("COMMAND MONITOR", $sformatf("A:0x%2h B:0x%2h op: %s",
+            cmd.A, cmd.B, cmd.op.name()), UVM_HIGH)
       ap.write(cmd);
    endfunction : write_to_monitor
-
 
    function operation_t op2enum(bit[2:0] op);
       case(op)
@@ -48,7 +48,9 @@ class command_monitor extends uvm_component;
          3'b011 : return xor_op;
          3'b100 : return mul_op;
          3'b111 : return rst_op;
-         default : $fatal($sformatf("Illegal operation on op bus: %3b",op));
+         default : begin
+            `uvm_fatal("COMMAND MONITOR", $sformatf("Illegal operation on op bus: %3b", op))
+         end
       endcase // case (op)
    endfunction : op2enum
 
@@ -57,4 +59,3 @@ class command_monitor extends uvm_component;
    endfunction
 
 endclass : command_monitor
-

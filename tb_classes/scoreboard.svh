@@ -24,34 +24,34 @@ class scoreboard extends uvm_subscriber #(shortint);
 
    function void write(shortint t);
       shortint predicted_result;
+      string data_str;
       command_s cmd;
+      cmd.A = 0;
+      cmd.B = 0;
       cmd.op = no_op;
       do
-         if (!cmd_f.try_get(cmd)) $fatal(1, "No command in self checker");
+         if (!cmd_f.try_get(cmd))
+            `uvm_fatal("SCOREBOARD", "Missing command in self checker")
       while ((cmd.op == no_op) || (cmd.op == rst_op));
 
       case (cmd.op)
-         add_op: predicted_result = cmd.A + cmd.B;
+         add_op: predicted_result = cmd.A + cmd.B + 1; //force an error on adds
          and_op: predicted_result = cmd.A & cmd.B;
          xor_op: predicted_result = cmd.A ^ cmd.B;
          mul_op: predicted_result = cmd.A * cmd.B;
       endcase // case (op_set)
 
-      if (predicted_result != t)
-         $error (
-            "FAILED: A: %2h  B: %2h  op: %s actual result: %4h   expected: %4h",
-            cmd.A, cmd.B, cmd.op.name(), t,  predicted_result);
-   endfunction : write
+      data_str = $sformatf(" %2h %0s %2h = %4h (%4h predicted)",
+         cmd.A, cmd.op.name() ,cmd.B, t,  predicted_result);
 
+      if (predicted_result != t)
+         `uvm_error ("SCOREBOARD", {"FAIL: ",data_str})
+      else
+         `uvm_info ( "SCOREBOARD", {"PASS: ",data_str}, UVM_HIGH)
+   endfunction : write
 
    function new (string name, uvm_component parent);
       super.new(name, parent);
    endfunction : new
 
 endclass : scoreboard
-
-
-
-
-
-

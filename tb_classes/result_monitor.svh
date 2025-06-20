@@ -19,14 +19,15 @@ class result_monitor extends uvm_component;
    uvm_analysis_port #(shortint) ap;
 
    function void write_to_monitor(shortint r);
-      $display ("RESULT MONITOR: resultA: 0x%0h",r);
+      `uvm_info("RESULT MONITOR", $sformatf("resultA: 0x%0h", r), UVM_HIGH)
       ap.write(r);
    endfunction : write_to_monitor
 
    function void build_phase(uvm_phase phase);
       virtual tinyalu_bfm bfm;
-      if(!uvm_config_db #(virtual tinyalu_bfm)::get(null, "*","bfm", bfm))
-         $fatal("Failed to get BFM");
+      if(!uvm_config_db #(virtual tinyalu_bfm)::get(null, "*", "bfm", bfm))
+         `uvm_fatal("RESULT MONITOR", "Failed to get BFM")
+
       bfm.result_monitor_h = this;
       ap  = new("ap",this);
    endfunction : build_phase
@@ -36,9 +37,3 @@ class result_monitor extends uvm_component;
    endfunction : new
 
 endclass : result_monitor
-
-
-
-
-
-
