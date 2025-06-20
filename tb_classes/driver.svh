@@ -13,45 +13,31 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-class base_tester extends uvm_component;
-   `uvm_component_utils(base_tester)
+class driver extends uvm_component;
+   `uvm_component_utils(driver)
+
    virtual tinyalu_bfm bfm;
 
-   uvm_put_port #(command_s) command_port;
+   uvm_get_port #(command_s) command_port;
 
    function void build_phase(uvm_phase phase);
-      command_port = new("command_port", this);
+      if(!uvm_config_db #(virtual tinyalu_bfm)::get(null, "*","bfm", bfm))
+         $fatal(0, "Failed to get BFM");
+      command_port = new("command_port",this);
    endfunction : build_phase
 
-   virtual function operation_t get_op();
-      return no_op;
-   endfunction : get_op
-
-   virtual function byte get_data();
-      return 0;
-   endfunction : get_data
-
    task run_phase(uvm_phase phase);
-      byte         unsigned        iA;
-      byte         unsigned        iB;
-      operation_t                  op_set;
       command_s    command;
+      shortint     result;
 
-      phase.raise_objection(this);
-      command.op = rst_op;
-      command_port.put(command);
-      repeat (1000) begin : random_loop
-         command.op = get_op();
-         command.A =  get_data();
-         command.B =  get_data();
-         command_port.put(command);
-      end : random_loop
-      #500;
-      phase.drop_objection(this);
+      forever begin : command_loop
+         command_port.get(command);
+         bfm.send_op(command.A, command.B, command.op, result);
+      end : command_loop
    endtask : run_phase
 
    function new (string name, uvm_component parent);
       super.new(name, parent);
    endfunction : new
 
-endclass : base_tester
+endclass : driver
