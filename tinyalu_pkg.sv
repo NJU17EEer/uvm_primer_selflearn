@@ -24,37 +24,37 @@ package tinyalu_pkg;
       mul_op = 3'b100,
       rst_op = 3'b111} operation_t;
 
-   `include "tinyalu_agent_config.svh"
-   `include "env_config.svh"
+   `include "utils/tinyalu_agent_config.svh"
+   `include "env/env_config.svh"
 
-   `include "sequence_item.svh"
+   `include "utils/sequence_item.svh"
    typedef uvm_sequencer #(sequence_item) sequencer;
 
-   `include "add_sequence_item.svh"
-   `include "tinyalu_sequence.svh"
-   `include "random_sequence.svh"
-   `include "maxmult_sequence.svh"
-   `include "reset_sequence.svh"
-   `include "runall_sequence.svh"
-   `include "tinyalu_runall_sequence.svh"
-   `include "add_sequence.svh"
-   `include "fibonacci_sequence.svh"
-   `include "short_random_sequence.svh"
+   `include "utils/add_sequence_item.svh"
+   `include "test/tinyalu_sequence.svh"
+   `include "test/random_sequence.svh"
+   `include "test/maxmult_sequence.svh"
+   `include "test/reset_sequence.svh"
+   `include "test/runall_sequence.svh"
+   `include "test/tinyalu_runall_sequence.svh"
+   `include "test/add_sequence.svh"
+   `include "test/fibonacci_sequence.svh"
+   `include "test/short_random_sequence.svh"
 
 
-   `include "result_transaction.svh"
-   `include "coverage.svh"
-   `include "scoreboard.svh"
-   `include "driver.svh"
-   `include "command_monitor.svh"
-   `include "result_monitor.svh"
-   `include "tinyalu_agent.svh"
-   `include "env.svh"
-   `include "parallel_sequence.svh"
+   `include "utils/result_transaction.svh"
+   `include "utils/coverage.svh"
+   `include "utils/scoreboard.svh"
+   `include "utils/driver.svh"
+   `include "utils/command_monitor.svh"
+   `include "utils/result_monitor.svh"
+   `include "utils/tinyalu_agent.svh"
+   `include "env/env.svh"
+   `include "test/parallel_sequence.svh"
 
-   `include "tinyalu_base_test.svh"
-   `include "full_test.svh"
-   `include "fibonacci_test.svh"
-   `include "parallel_test.svh"
+   `include "test/tinyalu_base_test.svh"
+   `include "test/full_test.svh"
+   `include "test/fibonacci_test.svh"
+   `include "test/parallel_test.svh"
 
 endpackage : tinyalu_pkg
