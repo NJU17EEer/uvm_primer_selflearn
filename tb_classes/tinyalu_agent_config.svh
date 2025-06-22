@@ -13,16 +13,19 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-class add_test extends random_test;
-   `uvm_component_utils(add_test);
+class tinyalu_agent_config;
 
-   function void build_phase(uvm_phase phase);
-      command_transaction::type_id::set_type_override(add_transaction::get_type());
-      super.build_phase(phase);
-   endfunction : build_phase
+   virtual tinyalu_bfm bfm;
+   protected  uvm_active_passive_enum     is_active;
 
-   function new (string name, uvm_component parent);
-      super.new(name,parent);
+   function new (virtual tinyalu_bfm bfm, uvm_active_passive_enum
+         is_active);
+      this.bfm = bfm;
+      this.is_active = is_active;
    endfunction : new
 
-endclass : add_test
+   function uvm_active_passive_enum get_is_active();
+      return is_active;
+   endfunction : get_is_active
+
+endclass : tinyalu_agent_config

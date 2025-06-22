@@ -25,8 +25,10 @@ class driver extends uvm_component;
    endfunction : new
 
    function void build_phase(uvm_phase phase);
-      if(!uvm_config_db #(virtual tinyalu_bfm)::get(null, "*","bfm", bfm))
-         `uvm_fatal("DRIVER", "Failed to get BFM")
+      tinyalu_agent_config tinyalu_agent_config_h;
+      if(!uvm_config_db #(tinyalu_agent_config)::get(this, "","config", tinyalu_agent_config_h))
+         `uvm_fatal("DRIVER", "Failed to get BFM");
+      bfm = tinyalu_agent_config_h.bfm;
       command_port = new("command_port",this);
    endfunction : build_phase
 

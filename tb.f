@@ -6,4 +6,5 @@ tinyalu_pkg.sv
 tinyalu_bfm.sv
 
 +incdir+.
+tinyalu_tester_module.sv
 top.sv

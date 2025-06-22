@@ -13,21 +13,12 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-module top;
-  import uvm_pkg::*;
-  `include "uvm_macros.svh"
+class env_config;
+   virtual tinyalu_bfm class_bfm;
+   virtual tinyalu_bfm module_bfm;
 
-  import tinyalu_pkg::*;
-  `include "tinyalu_macros.svh"
-
-  tinyalu class_dut ();
-  tinyalu module_dut ();
-
-  `include "connect_class.sv"
-  `include "connect_module.sv"
-
-  initial begin
-    run_test();
-  end
-
-endmodule : top
+   function new(virtual tinyalu_bfm class_bfm, virtual tinyalu_bfm module_bfm);
+      this.class_bfm = class_bfm;
+      this.module_bfm = module_bfm;
+   endfunction : new
+endclass : env_config

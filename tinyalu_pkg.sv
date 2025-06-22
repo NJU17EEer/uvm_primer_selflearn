@@ -24,13 +24,8 @@ package tinyalu_pkg;
       mul_op = 3'b100,
       rst_op = 3'b111} operation_t;
 
-
-   typedef struct {
-      byte unsigned        A;
-      byte unsigned        B;
-      operation_t op;
-   } command_s;
-
+   `include "tinyalu_agent_config.svh"
+   `include "env_config.svh"
 
    `include "command_transaction.svh"
    `include "add_transaction.svh"
@@ -38,14 +33,12 @@ package tinyalu_pkg;
    `include "tester.svh"
    `include "coverage.svh"
    `include "driver.svh"
-   `include "base_tester.svh"
    `include "scoreboard.svh"
    `include "command_monitor.svh"
    `include "result_monitor.svh"
 
+   `include "tinyalu_agent.svh"
    `include "env.svh"
-
-   `include "random_test.svh"
-   `include "add_test.svh"
+   `include "dual_test.svh"
 
 endpackage : tinyalu_pkg
