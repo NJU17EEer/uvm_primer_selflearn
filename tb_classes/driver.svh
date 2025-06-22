@@ -13,35 +13,32 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-class driver extends uvm_component;
+class driver extends uvm_driver #(sequence_item);
    `uvm_component_utils(driver)
 
    virtual tinyalu_bfm bfm;
-
-   uvm_get_port #(command_transaction) command_port;
-
-   function new (string name, uvm_component parent);
-      super.new(name, parent);
-   endfunction : new
 
    function void build_phase(uvm_phase phase);
       tinyalu_agent_config tinyalu_agent_config_h;
       if(!uvm_config_db #(tinyalu_agent_config)::get(this, "","config", tinyalu_agent_config_h))
          `uvm_fatal("DRIVER", "Failed to get BFM");
       bfm = tinyalu_agent_config_h.bfm;
-      command_port = new("command_port",this);
    endfunction : build_phase
 
    task run_phase(uvm_phase phase);
-      byte         unsigned        iA;
-      byte         unsigned        iB;
-      operation_t                  op_set;
-      shortint     result;
-      command_transaction    command;
-      forever begin : command_loop
-         command_port.get(command);
-         bfm.send_op(command.A, command.B, command.op, result);
-      end : command_loop
+      sequence_item cmd;
+
+      forever begin : cmd_loop
+         shortint unsigned result;
+         seq_item_port.get_next_item(cmd);
+         bfm.send_op(cmd.A, cmd.B, cmd.op, result);
+         cmd.result = result;
+         seq_item_port.item_done();
+      end : cmd_loop
    endtask : run_phase
+
+   function new (string name, uvm_component parent);
+      super.new(name, parent);
+   endfunction : new
 
 endclass : driver

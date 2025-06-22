@@ -17,7 +17,7 @@ class scoreboard extends uvm_subscriber #(result_transaction);
    `uvm_component_utils(scoreboard);
 
 
-   uvm_tlm_analysis_fifo #(command_transaction) cmd_f;
+   uvm_tlm_analysis_fifo #(sequence_item) cmd_f;
 
    function new (string name, uvm_component parent);
       super.new(name, parent);
@@ -27,7 +27,7 @@ class scoreboard extends uvm_subscriber #(result_transaction);
       cmd_f = new ("cmd_f", this);
    endfunction : build_phase
 
-   function result_transaction predict_result(command_transaction cmd);
+   function result_transaction predict_result(sequence_item cmd);
       result_transaction predicted;
 
       predicted = new("predicted");
@@ -46,7 +46,7 @@ class scoreboard extends uvm_subscriber #(result_transaction);
 
    function void write(result_transaction t);
       string data_str;
-      command_transaction cmd;
+      sequence_item cmd;
       result_transaction predicted;
 
       do
@@ -60,12 +60,10 @@ class scoreboard extends uvm_subscriber #(result_transaction);
          " ==>  Actual "  ,    t.convert2string(),
          "/Predicted ",predicted.convert2string()};
 
-
       if (!predicted.compare(t))
          `uvm_error("SELF CHECKER", {"FAIL: ",data_str})
       else
          `uvm_info ("SELF CHECKER", {"PASS: ", data_str}, UVM_HIGH)
 
    endfunction : write
-
 endclass : scoreboard

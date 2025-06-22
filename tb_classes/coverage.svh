@@ -13,7 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-class coverage extends uvm_subscriber #(command_transaction);
+class coverage extends uvm_subscriber #(sequence_item);
    `uvm_component_utils(coverage)
 
    byte         unsigned        A;
@@ -101,7 +101,7 @@ class coverage extends uvm_subscriber #(command_transaction);
       zeros_or_ones_on_ops = new();
    endfunction : new
 
-   function void write(command_transaction t);
+   function void write(sequence_item t);
       A = t.A;
       B = t.B;
       op_set = t.op;
